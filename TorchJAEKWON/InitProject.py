@@ -14,8 +14,6 @@ class InitProject:
             "DataProcess/Process",
             "DataProcess/Util",
 
-            "Model"
-
             "Train/LogWriter",
             "Train/Loss/LossControl",
             "Train/Loss/LossFunction",
@@ -32,7 +30,7 @@ class InitProject:
         os.system("pwd")
         os.system(f"cp -r {self.copy_dir}/* {self.project_dir}")
         for dir in self.dir_list:
-            os.makedirs(f"{self.project_dir}/{dir}")
+            os.makedirs(f"{self.project_dir}/{dir}",exist_ok=True)
 
 if __name__ == "__main__":
     init_project = InitProject()

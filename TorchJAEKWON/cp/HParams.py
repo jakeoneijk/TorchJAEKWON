@@ -49,7 +49,7 @@ class HParams(Singleton):
 class Mode:
     config_name:str = "000000_template"
     config_parent_path:str = ""
-    config_path:str = f"./Config/{config_parent_path}{config_name}.yaml"
+    config_path:str = f"./Config/{config_parent_path}/{config_name}.yaml"
 
     app:str = {0:"preprocess", 1:"make_meta_data", 2:"train", 3:"inference", 4:"evaluate"}[0]
 
@@ -75,11 +75,12 @@ class Resource:
 class Data:
     original_data_dir:str = "../220101_data"
     root_path:str = "./Data/Dataset"
-    data_config_per_dataset_dict:dict = dict()
+    data_config_per_dataset_dict = dict()
 
 @dataclass
 class PreProcess:
     multi_processing:bool = True
+    max_workers:int = None
 
 @dataclass
 class Process:
@@ -92,7 +93,7 @@ class MakeMetaData:
 @dataclass
 class PytorchData:
     class_root_dir:str = "./Data/PytorchDataset"
-    dataloader:dict = dict()
+    dataloader = dict()
 
 @dataclass
 class Model:

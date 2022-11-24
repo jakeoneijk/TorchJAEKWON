@@ -20,6 +20,8 @@ class UtilData:
     def pickle_save(self,save_path:str, data:Union[ndarray,Tensor]) -> None:
         assert(os.path.splitext(save_path)[1] == ".pkl") , "file extension should be '.pkl'"
 
+        os.makedirs(os.path.dirname(save_path),exist_ok=True)
+        
         with open(save_path,'wb') as file_writer:
             pickle.dump(data,file_writer)
     

@@ -7,8 +7,8 @@ import torch
 from abc import ABC, abstractmethod
 
 from HParams import HParams
-from GetModule import GetModule
-from DataProcess.Util.UtilData import UtilData
+from TorchJAEKWON.GetModule import GetModule
+from TorchJAEKWON.DataProcess.Util.UtilData import UtilData
 
 class Inferencer(ABC):
     def __init__(self,h_params:HParams) -> None:

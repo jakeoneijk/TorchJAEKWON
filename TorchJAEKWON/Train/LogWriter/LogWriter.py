@@ -12,7 +12,7 @@ from HParams import HParams
 
 class LogWriter():
     def __init__(self,config:dict)->None:
-        self.h_params:HParams = config["h_params"]
+        self.h_params:HParams = HParams()
         self.experiment_start_time:float = time.time()
         self.experiment_name = "[" +datetime.now().strftime('%y%m%d-%H%M%S') + "] " + self.h_params.mode.config_name if self.h_params.log.use_time_on_experiment_name else self.h_params.mode.config_name
         

@@ -1,10 +1,10 @@
-from GetModule import GetModule
+from TorchJAEKWON.GetModule import GetModule
 from HParams import HParams
 import torch
 
 class LossControl:
-    def __init__(self,h_params:HParams) -> None:
-        self.h_params : HParams = h_params
+    def __init__(self) -> None:
+        self.h_params = HParams()
         self.loss_meta_dict : dict = self.h_params.train.loss_dict
         self.loss_function_dict : dict = dict()
         self.set_loss_function_dict()

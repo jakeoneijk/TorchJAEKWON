@@ -1,20 +1,20 @@
 from typing import Dict
 
 import os
-from Train.LogWriter.LogWriter import LogWriter
-from HParams import HParams
 from abc import ABC, abstractmethod
 from enum import Enum,unique
+import random
+import numpy as np
 import torch
 from torch.utils.data import DataLoader
-import numpy as np
-import random
-from GetModule import GetModule
-from Train.Optimizer.OptimizerControl import OptimizerControl
-from Train.AverageMeter import AverageMeter
-from Train.Loss.LossControl.LossControl import LossControl
 
-from Data.PytorchDataLoader.PytorchDataLoader import PytorchDataLoader
+from HParams import HParams
+from TorchJAEKWON.GetModule import GetModule
+from TorchJAEKWON.Data.PytorchDataLoader.PytorchDataLoader import PytorchDataLoader
+from TorchJAEKWON.Train.LogWriter.LogWriter import LogWriter
+from TorchJAEKWON.Train.Optimizer.OptimizerControl import OptimizerControl
+from TorchJAEKWON.Train.AverageMeter import AverageMeter
+from TorchJAEKWON.Train.Loss.LossControl.LossControl import LossControl
 
 @unique
 class TrainState(Enum):
@@ -137,7 +137,7 @@ class Trainer(ABC):
         self.loss_control = self.get_module.get_module("loss_control",self.h_params.train.loss_control["name"],{"h_params":self.h_params},arg_unpack=True)
 
         if self.h_params.resource.multi_gpu:
-            from Train.Trainer.Parallel import DataParallelModel, DataParallelCriterion
+            from TorchJAEKWON.Train.Trainer.Parallel import DataParallelModel, DataParallelCriterion
             self.model = DataParallelModel(self.model)
             self.model.cuda()
             for loss_name in self.loss_control.loss_function_dict:

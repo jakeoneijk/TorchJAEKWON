@@ -40,17 +40,17 @@ class Controller():
     def preprocess(self) -> None:
         for data_name in self.h_params.data.data_config_per_dataset_dict:
             preprocessor: Preprocessor = self.get_module.get_module(module_type="preprocess", 
-                                                                    module_name=self.h_params.data.data_config_per_dataset_dict[data_name]["preprocessor_name"],
+                                                                    module_name=self.h_params.data.data_config_per_dataset_dict[data_name]["preprocessor_class_name"],
                                                                     module_arg={"data_config_dict": self.h_params.data.data_config_per_dataset_dict[data_name]},
                                                                     arg_unpack=True)
             
             preprocessor.preprocess_data()
     
-    def make_meta_data(self)->None:
+    def make_meta_data(self) -> None:
         for mata_data_class_name in self.h_params.make_meta_data.process_dict:
             meta_data_maker: MakeMetaData = self.get_module.get_module(module_type="make_meta_data", 
                                                                     module_name=mata_data_class_name,
-                                                                    module_arg={"h_params": self.h_params, "make_meta_data_config": self.h_params.make_meta_data.make_meta_data_dict[mata_data_class_name]},
+                                                                    module_arg={"make_meta_data_config": self.h_params.make_meta_data.process_dict[mata_data_class_name]},
                                                                     arg_unpack=True)
             meta_data_maker.make_meta_data()
 

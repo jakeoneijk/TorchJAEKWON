@@ -24,8 +24,8 @@ class GetModule:
         self.preprocess_realtime_root_path:str = "./PreprocessRealTime"
         self.trainer_root_path:str = "./Train/Trainer"
     
-    def get_import_path_of_module(self,root_path,module_name) -> Optional[str]:
-        path_queue:list = [root_path]
+    def get_import_path_of_module(self,root_path:str, module_name:str ) -> Optional[str]:
+        path_queue:list = [root_path, root_path.replace("./","./TorchJAEKWON/")]
         while path_queue:
             path_to_search:str = path_queue.pop(0)
             for dir_name in os.listdir(path_to_search):

@@ -1,6 +1,6 @@
 data:
   data_config_per_dataset_dict:
-    dataset_name:
+    'dataset_name':
       preprocessor_class_name: 'Preprocessor'
       subset_list: ["train","valid","test"]
       load_to_pytorch_dataset: True

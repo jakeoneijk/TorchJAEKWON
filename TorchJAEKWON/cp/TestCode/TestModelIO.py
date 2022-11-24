@@ -11,7 +11,7 @@ import torch.nn as nn
 from TestCode.torchinfo import summary
 
 from HParams import HParams
-from GetModule import GetModule
+from TorchJAEKWON.GetModule import GetModule
 
 class TestModelIO():
     def __init__(self,h_params:HParams) -> None:
