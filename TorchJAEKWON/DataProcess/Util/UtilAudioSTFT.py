@@ -7,12 +7,12 @@ import librosa.display
 import matplotlib.pyplot as plt
 
 from HParams import HParams
-from DataProcess.Util.UtilAudio import UtilAudio
+from TorchJAEKWON.DataProcess.Util.UtilAudio import UtilAudio
 
 class UtilAudioSTFT(UtilAudio):
-    def __init__(self, h_params: HParams = HParams()):
+    def __init__(self):
         super().__init__()
-        self.h_params = h_params
+        self.h_params = HParams()
 
         self.nfft = self.h_params.preprocess.nfft
         self.hop_size = self.h_params.preprocess.hopsize

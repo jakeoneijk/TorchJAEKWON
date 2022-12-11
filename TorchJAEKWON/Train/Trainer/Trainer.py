@@ -6,6 +6,7 @@ from enum import Enum,unique
 import random
 import numpy as np
 import torch
+import torch.nn as nn
 from torch.utils.data import DataLoader
 
 from HParams import HParams
@@ -23,8 +24,8 @@ class TrainState(Enum):
     TEST = "test"
  
 class Trainer(ABC):
-    def __init__(self,h_params:HParams) -> None:
-        self.h_params:HParams = h_params
+    def __init__(self) -> None:
+        self.h_params = HParams()
 
         self.model = None
         
@@ -63,9 +64,15 @@ class Trainer(ABC):
         run 1 step
         1. get data
         2. use model
+
         3. calculate loss
+            current_loss_dict = self.loss_control.calculate_total_loss_by_loss_meta_dict(pred_dict=pred, target_dict=train_data_dict)
+        
         4. put the loss in metric (append)
-        return loss,metric
+            for loss_name in current_loss_dict:
+                metric[loss_name].update(current_loss_dict[loss_name].item(),batch_size)
+
+        return current_loss_dict["total_loss"],metric
         """
         raise NotImplementedError
 
@@ -132,9 +139,9 @@ class Trainer(ABC):
         random.seed(self.seed)
 
     def init_train(self, dataset_dict=None):
-        self.model = self.get_module.get_model(self.h_params.model.name)
-        self.optimizer_control = self.get_module.get_module("optimizer",self.h_params.train.optimizer_config["name"],{"h_params":self.h_params, "model":self.model},arg_unpack=True)
-        self.loss_control = self.get_module.get_module("loss_control",self.h_params.train.loss_control["name"],{"h_params":self.h_params},arg_unpack=True)
+        self.model:nn.Module = self.get_module.get_model(self.h_params.model.class_name)
+        self.optimizer_control = self.get_module.get_module("optimizer",self.h_params.train.optimizer_control_config['class_name'],{"model":self.model},arg_unpack=True)
+        self.loss_control = self.get_module.get_module("loss_control",self.h_params.train.loss_control["class_name"],None)
 
         if self.h_params.resource.multi_gpu:
             from TorchJAEKWON.Train.Trainer.Parallel import DataParallelModel, DataParallelCriterion
@@ -148,13 +155,13 @@ class Trainer(ABC):
 
         self.log_writer = self.get_module.get_module(
             module_type="log_writer",
-            module_name=self.h_params.train.log_writer_name,
-            module_arg={"h_params":self.h_params,"model":self.model})
+            module_name=self.h_params.train.log_writer_class_name,
+            module_arg={"model":self.model})
 
         self.set_data_loader(dataset_dict)
     
     def set_data_loader(self,dataset_dict=None):
-        data_loader_loader:PytorchDataLoader = self.get_module.get_module('pytorch_dataLoader',self.h_params.pytorch_data.name,self.h_params)
+        data_loader_loader:PytorchDataLoader = self.get_module.get_module('pytorch_dataLoader',self.h_params.pytorch_data.class_name,None)
 
         if dataset_dict is not None:
             pytorch_data_loader_config_dict = data_loader_loader.get_pytorch_data_loader_config(dataset_dict)

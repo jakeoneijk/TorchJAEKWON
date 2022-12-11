@@ -55,7 +55,7 @@ class Controller():
             meta_data_maker.make_meta_data()
 
     def train(self) -> None:
-        trainer:Trainer = self.get_module.get_module("trainer",self.h_params.train.class_name,self.h_params)
+        trainer:Trainer = self.get_module.get_module("trainer",self.h_params.train.class_name,None)
         trainer.init_train()
         
         if self.h_params.mode.train == "resume":
@@ -64,7 +64,7 @@ class Controller():
         trainer.fit()
 
     def inference(self):
-        inferencer:Inferencer = self.get_module.get_module("tester", self.h_params.inference.class_name, module_arg={"h_params":self.h_params},arg_unpack=True)
+        inferencer:Inferencer = self.get_module.get_module("inferencer", self.h_params.inference.class_name,arg_unpack=True)
         inferencer.inference()
 
     def evaluate(self):

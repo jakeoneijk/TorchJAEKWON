@@ -14,7 +14,7 @@ class LogWriter():
     def __init__(self,config:dict)->None:
         self.h_params:HParams = HParams()
         self.experiment_start_time:float = time.time()
-        self.experiment_name = "[" +datetime.now().strftime('%y%m%d-%H%M%S') + "] " + self.h_params.mode.config_name if self.h_params.log.use_time_on_experiment_name else self.h_params.mode.config_name
+        self.experiment_name = "[" +datetime.now().strftime('%y%m%d-%H%M%S') + "] " + self.h_params.mode.config_name if self.h_params.log.use_currenttime_on_experiment_name else self.h_params.mode.config_name
         
         self.log_path:dict[str,str] = {"root":"","console":"","visualizer":""}
         self.set_log_path()
@@ -37,7 +37,7 @@ class LogWriter():
         if self.h_params.mode.train == "resume":
             self.log_path["root"] = self.h_params.mode.resume_path
         else:
-            self.log_path["root"] = os.path.join(self.h_params.log.root_path,self.experiment_name)
+            self.log_path["root"] = os.path.join(self.h_params.log.class_root_dir,self.experiment_name)
         self.log_path["console"] = self.log_path["root"]+ "/log.txt"
         self.log_path["visualizer"] = os.path.join(self.log_path["root"],"tb")
 

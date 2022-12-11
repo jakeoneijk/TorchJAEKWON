@@ -40,7 +40,7 @@ class PytorchDataLoader:
                 "data_path_list": data_path_dict[subset],
                 "subset": subset
             }
-            pytorch_dataset_dict[subset] = self.get_module.get_module("pytorch_dataset",self.data_loader_config[subset]["dataset"]["name"],config_for_dataset)
+            pytorch_dataset_dict[subset] = self.get_module.get_module("pytorch_dataset",self.data_loader_config[subset]["dataset"]["class_name"],config_for_dataset)
         return pytorch_dataset_dict
     
     def get_pytorch_data_loader_config(self,pytorch_dataset:dict) -> dict:
@@ -56,7 +56,7 @@ class PytorchDataLoader:
                 if arg_name in self.module_name_list_of_data_loader_args:
                     arguments_for_args_class = {"h_params":self.h_params,"config":self.data_loader_config[subset][arg_name],"subset":subset}
                     pytorch_data_loader_config_dict[subset][arg_name] = self.get_module.get_module( arg_name, 
-                                                                                                    self.data_loader_config[subset][arg_name]["name"],
+                                                                                                    self.data_loader_config[subset][arg_name]["class_name"],
                                                                                                     arguments_for_args_class)
                 else:
                     pytorch_data_loader_config_dict[subset][arg_name] = self.data_loader_config[subset][arg_name]

@@ -8,8 +8,8 @@ from Train.Optimizer.OptimizerControl import OptimizerControl
 from torch.optim.lr_scheduler import LambdaLR
 
 class OptimizerControlLambdaLRByStep(OptimizerControl):
-    def __init__(self,h_params:HParams, model:nn.Module = None) -> None:
-        super().__init__(h_params, model)
+    def __init__(self,model:nn.Module = None) -> None:
+        super().__init__(model)
     
     def set_lr_scheduler(self):
         scheduler_config = self.h_params.train.scheduler["config"]

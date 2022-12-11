@@ -4,8 +4,8 @@ import torch.nn as nn
 from HParams import HParams
 
 class OptimizerControl:
-    def __init__(self,h_params:HParams, model:nn.Module = None) -> None:
-        self.h_params:HParams = h_params
+    def __init__(self, model:nn.Module = None) -> None:
+        self.h_params = HParams()
         self.optimizer = None
         self.lr_scheduler = None
 
@@ -22,10 +22,11 @@ class OptimizerControl:
         optimizer_config = self.h_params.train.optimizer["config"]
         optimizer_config["params"] = model.parameters()
         optimizer_config['lr'] = float(optimizer_config['lr'])
-        optimizer_config['eps'] = float(optimizer_config['eps'])
+        if 'eps' in optimizer_config:
+            optimizer_config['eps'] = float(optimizer_config['eps'])
 
         if optimizer_name == "Adam":
-            self.optimizer =    torch.optim.Adam(**optimizer_config)
+            self.optimizer = torch.optim.Adam(**optimizer_config)
     
     def optimizer_step(self):
         self.optimizer.step()
@@ -51,10 +52,9 @@ class OptimizerControl:
         pass
 
     def lr_scheduler_step(self,interval_type="step",args = None):
-        if (self.num_lr_scheduler_step % self.scheduler_config["config"]["frequency"]) != 0:
-            return
-        if interval_type != self.scheduler_config["config"]["interval"]:
-            return
+        if self.lr_scheduler == None or (self.num_lr_scheduler_step % self.scheduler_config["config"]["frequency"]) != 0 or interval_type != self.scheduler_config["config"]["interval"]:
+            return 
+
         self.lr_scheduler.step()
         self.num_lr_scheduler_step += 1
     

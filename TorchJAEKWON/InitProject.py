@@ -18,7 +18,7 @@ class InitProject:
             "Train/Loss/LossControl",
             "Train/Loss/LossFunction",
             "Train/Optimizer",
-            "Train/Trainer"
+            "Train/Trainer",
 
             "Inference/Output",
             "Inference/Inferencer",

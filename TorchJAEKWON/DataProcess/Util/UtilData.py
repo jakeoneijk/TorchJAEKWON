@@ -3,6 +3,7 @@ from numpy import ndarray
 from torch import Tensor
 
 import os
+import torch
 import pickle
 import yaml
 import csv
@@ -10,7 +11,10 @@ from pathlib import Path
 
 class UtilData:
 
-    def get_file_name_from_path(self,path:str,with_ext:bool)->str:
+    def get_file_name_from_path(self,path:str,with_ext:bool = False)->str:
+        if path is None:
+            print("warning: path is None")
+            return ""
         path_pathlib = Path(path)
         if with_ext:
             return path_pathlib.name
@@ -47,3 +51,12 @@ class UtilData:
             for row in spamreader:
                 row_result_list.append(row)
         return row_result_list
+    
+    def fit_feature_shape_length(self,feature:Union[Tensor,ndarray],shape_length:int) -> Tensor:
+        if type(feature) != torch.Tensor:
+            feature = torch.from_numpy(feature)
+
+        for _ in range(shape_length - len(feature.shape)):
+            feature = torch.unsqueeze(feature, 0)
+        
+        return feature

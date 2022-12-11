@@ -98,6 +98,7 @@ class PytorchData:
 @dataclass
 class Model:
     class_root_dir:str = "./Model"
+    class_name:str = ''
     
 @dataclass
 class Train:
@@ -120,11 +121,11 @@ class Inference():
     dataset_type:str = ["singledata","testset"][1]
     singledata_path:str ="./Test/TestInput/commercial_song.wav"
 
-    pretrain_module_name:str = ["all"][0]
-    pretrain_dir:str = "./ModelCheckpoint"
-    pretrain_dir_name:str = "210811_DoubleOpenUnmix"
+    pretrain_module_name:str = ["all","last_epoch"][0]
+    pretrain_root_dir:str = "./Train/Log"
+    pretrain_dir:str = ""
     
-    output_dir:str = "./Test/TestOutput"
+    output_dir:str = "./Inference/Output"
     
 
 @dataclass

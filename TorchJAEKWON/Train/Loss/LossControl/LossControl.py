@@ -25,6 +25,8 @@ class LossControl:
                 self.loss_function_dict[loss_name] = torch.nn.MSELoss()
             elif lossfunction == "l1":
                 self.loss_function_dict[loss_name] = torch.nn.L1Loss()
+            elif lossfunction == "l2":
+                self.loss_function_dict[loss_name] = torch.nn.MSELoss()
             elif lossfunction == "bce":
                 self.loss_function_dict[loss_name] = torch.nn.BCELoss()
             else:
@@ -56,8 +58,8 @@ class LossControl:
             loss_name_list = list(self.loss_meta_dict.keys())
 
         for loss_name in loss_name_list:
-            pred_name:str = self.loss_meta_dict[loss_name]['pred']
-            target_name:str = self.loss_meta_dict[loss_name]['target']
+            pred_name:str = self.loss_meta_dict[loss_name]['pred_name']
+            target_name:str = self.loss_meta_dict[loss_name]['target_name']
             weight = self.loss_meta_dict[loss_name]['weight']
 
             if type(pred_dict) is list:

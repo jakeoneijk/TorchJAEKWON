@@ -6,8 +6,8 @@ from Model.ModelGan import ModelGan
 from HParams import HParams
 
 class OptimizerControlGan:
-    def __init__(self,h_params:HParams, model:ModelGan = None) -> None:
-        self.h_params:HParams = h_params
+    def __init__(self, model:ModelGan = None) -> None:
+        self.h_params = HParams()
 
         self.generator_optimizer:Optimizer = None
         self.discriminator_optimizer:Optimizer = None

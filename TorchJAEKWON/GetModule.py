@@ -18,14 +18,17 @@ class GetModule:
         self.root_path_dict["optimizer"] = "./Train/Optimizer"
         self.root_path_dict["loss_control"] = "./Train/Loss/LossControl"
         self.root_path_dict["loss_function"] = "./Train/Loss/LossFunction"
-        self.root_path_dict["tester"] = "./Test/Tester"
+        self.root_path_dict["inferencer"] = "./Inference/Inferencer"
         self.root_path_dict["evaluater"] = "./Evaluater"
 
         self.preprocess_realtime_root_path:str = "./PreprocessRealTime"
         self.trainer_root_path:str = "./Train/Trainer"
     
     def get_import_path_of_module(self,root_path:str, module_name:str ) -> Optional[str]:
-        path_queue:list = [root_path, root_path.replace("./","./TorchJAEKWON/")]
+        path_queue:list = [root_path]
+        if os.path.isdir(root_path.replace("./","./TorchJAEKWON/")):
+            path_queue.append(root_path.replace("./","./TorchJAEKWON/"))
+            
         while path_queue:
             path_to_search:str = path_queue.pop(0)
             for dir_name in os.listdir(path_to_search):
@@ -39,7 +42,7 @@ class GetModule:
                         return final_path
         return None
     
-    def get_module(self,module_type,module_name,module_arg,arg_unpack=False) -> object:
+    def get_module(self,module_type,module_name,module_arg=None,arg_unpack=False) -> object:
         module_path:str = self.get_import_path_of_module(self.root_path_dict[module_type],module_name)
         module_from = importlib.import_module(module_path)
         module_import_class = getattr(module_from,module_name)
