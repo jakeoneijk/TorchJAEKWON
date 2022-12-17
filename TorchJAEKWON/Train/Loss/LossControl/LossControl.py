@@ -29,6 +29,8 @@ class LossControl:
                 self.loss_function_dict[loss_name] = torch.nn.MSELoss()
             elif lossfunction == "bce":
                 self.loss_function_dict[loss_name] = torch.nn.BCELoss()
+            elif lossfunction == "cross_entropy":
+                self.loss_function_dict[loss_name] = torch.nn.CrossEntropyLoss()
             else:
                 get_module = GetModule()
                 loss_args:dict = self.loss_meta_dict[loss_name]["loss_args"]

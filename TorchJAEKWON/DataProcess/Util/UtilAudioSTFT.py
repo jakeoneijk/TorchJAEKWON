@@ -68,7 +68,7 @@ class UtilAudioSTFT(UtilAudio):
         pred_accom = librosa.istft(pred_accom_mag*mix_phase,hop_length=self.h_params.preprocess.hopsize,length=mix_audio.shape[-1])
         return pred_accom
     
-    def stft_plot_from_audio_path(self,audio_path:str,save_path:str = None, dpi:int = None) -> None:
+    def stft_plot_from_audio_path(self,audio_path:str,save_path:str = None, dpi:int = 500) -> None:
         audio, sr = librosa.load(audio_path)
         stft_audio:ndarray = librosa.stft(audio)
         spectrogram_db_scale:ndarray = librosa.amplitude_to_db(np.abs(stft_audio), ref=np.max)

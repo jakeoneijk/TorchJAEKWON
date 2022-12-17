@@ -40,7 +40,6 @@ class Trainer(ABC):
         self.seed = (int)(torch.cuda.initial_seed() / (2**32)) if self.h_params.train.seed is None else self.h_params.train.seed
         self.set_seeds(self.h_params.train.seed_strict)
 
-        self.check_point_num:int = 0 #binary
         self.current_epoch:int = 0
         self.total_epoch:int = self.h_params.train.epoch
 
@@ -199,7 +198,7 @@ class Trainer(ABC):
             self.best_valid_metric = self.save_best_model(self.best_valid_metric, valid_metric)
 
             if self.current_epoch > self.h_params.train.save_model_after_epoch and self.current_epoch % self.h_params.train.save_model_every_epoch == 0:
-                self.save_module(name=f"pretrained_epoch{self.current_epoch}")
+                self.save_module(name=f"pretrained_epoch{str(self.current_epoch).zfill(8)}")
             
             self.current_epoch += 1
             self.log_writer.log_every_epoch(model=self.model)
@@ -247,8 +246,8 @@ class Trainer(ABC):
             self.log_metric(metrics=metric,data_size=dataset_size,train_state=train_state)
 
         if train_state == TrainState.TRAIN:
-            self.save_checkpoint(self.check_point_num)
-            self.check_point_num = int((self.check_point_num+1)%2)
+            self.save_checkpoint()
+            self.save_checkpoint(f"train_checkpoint_backup{self.global_step % 2}.pth")
 
         return metric
     
@@ -270,7 +269,7 @@ class Trainer(ABC):
         best_model_load = torch.load(path)
         self.model.load_state_dict(best_model_load)
     
-    def save_checkpoint(self,prefix=""):
+    def save_checkpoint(self,save_name:str = 'train_checkpoint.pth'):
         train_state = {
             'epoch': self.current_epoch,
             'step': self.global_step,
@@ -281,8 +280,8 @@ class Trainer(ABC):
             'best_metric': self.best_valid_metric,
             'best_model_epoch' :  self.best_valid_epoch,
         }
-        path = os.path.join(self.log_writer.log_path["root"],f'train_checkpoint{prefix}.pth')
-        self.log_writer.print_and_log(f'save train_checkpoint{prefix}.pth',self.global_step)
+        path = os.path.join(self.log_writer.log_path["root"],save_name)
+        self.log_writer.print_and_log(save_name,self.global_step)
         torch.save(train_state,path)
 
     def load_train(self,filename:str):
