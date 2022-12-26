@@ -1,11 +1,14 @@
 from numpy import ndarray
 from torch import Tensor
 
+import os
 import torch
 import numpy as np
-from TorchJAEKWON.DataProcess.Util.UtilAudioSTFT import UtilAudioSTFT
-
+import librosa.display
 from librosa.filters import mel as librosa_mel_fn
+import matplotlib.pyplot as plt
+
+from TorchJAEKWON.DataProcess.Util.UtilAudioSTFT import UtilAudioSTFT
 
 class UtilAudioMelSpec(UtilAudioSTFT):
     def __init__(self):
@@ -52,3 +55,22 @@ class UtilAudioMelSpec(UtilAudioSTFT):
         log_scale_mel = self.dynamic_range_compression(mel_spec)
 
         return log_scale_mel
+    
+    def save_mel_spec_plot(self,save_path:str,mel_spec:ndarray):
+        assert(os.path.splitext(save_path)[1] == ".png") , "file extension should be '.png'"
+
+        fig, ax = plt.subplots()        
+            
+        img =   librosa.display.specshow(
+                mel_spec, 
+                y_axis='mel', 
+                x_axis='time',
+                sr=self.sample_rate, 
+                hop_length=self.hop_size, 
+                fmin=self.frequency_min, 
+                fmax=self.frequency_max, 
+                ax=ax)
+
+        ax.set(title='Mel spectrogram display')
+        fig.colorbar(img, ax=ax, format="%+2.f dB")
+        plt.savefig(save_path,dpi=1000)

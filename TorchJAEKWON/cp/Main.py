@@ -59,7 +59,7 @@ class Controller():
         trainer.init_train()
         
         if self.h_params.mode.train == "resume":
-            trainer.load_train(self.h_params.mode.resume_path+f"/train_checkpoint{self.h_params.mode.train_check_point_num}.pth")
+            trainer.load_train(self.h_params.mode.resume_path+"/train_checkpoint.pth")
         
         trainer.fit()
 

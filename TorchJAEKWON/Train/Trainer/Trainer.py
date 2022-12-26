@@ -247,7 +247,7 @@ class Trainer(ABC):
 
         if train_state == TrainState.TRAIN:
             self.save_checkpoint()
-            self.save_checkpoint(f"train_checkpoint_backup{self.global_step % 2}.pth")
+            self.save_checkpoint("train_checkpoint_backup.pth")
 
         return metric
     

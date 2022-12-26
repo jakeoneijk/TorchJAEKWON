@@ -55,7 +55,6 @@ class Mode:
 
     train:str = ["start","resume"][0]
     resume_path:str = f"./Train/Log/{config_name}"
-    train_check_point_num:int = (1)%2
     debug_mode:bool = False
 
 @dataclass
